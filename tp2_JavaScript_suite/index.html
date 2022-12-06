@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/main.css">
+
+    <script type="module" src="./assets/script/main.mjs"></script>
+</head>
+<body>
+    <header class="top-nav">
+        <span class="logo"><a href="#">Archive des Oeuvres d'Art</a></span>
+        <span class="filler"></span>
+        <nav class="menuPrincipal">
+            <a href="#!/liste">Liste Oeuvres</a>
+            <a href="#!/detail">Detail</a>
+            <!--<a href="#!/liste?filtre=release_date&valeurFiltre=1988">Accueil</a>-->
+         </nav>
+
+    </header>
+    <main>
+            <!-- Espace de template -->
+    </main>
+
+    <!-- Affichage de la page de liste -->
+    <script type="tmpl" data-nom-tmpl="tmpl-liste-oeuvres" id="tmpl-liste-oeuvres">
+        <header class="recherche">
+            <input type="search" name="champs-rechercher" placeholder="votre recherche"><button class="btn-rechercher">Rechercher</button>
+        </header>
+        <main>
+            <aside class="filtre">
+                <div class="controle">
+                    <blockquote class="options">
+                        Filtres :
+                        <span class="material-icons">tune</span>
+                    </blockquote>
+                    <div class="liste-categorie">
+                        <div><p>Date de sortie<span class="material-icons">arrow_drop_down</span></p>
+                            <li class="choixFiltre" data-js-cat="release_date" data-js-cat-valeur="1986" data-js-actif="0">1986</li>
+                            <li class="choixFiltre" data-js-cat="release_date" data-js-cat-valeur="1988" data-js-actif="1">1988</li>
+                            <li class="choixFiltre" data-js-cat="release_date" data-js-cat-valeur="1989" data-js-actif="0">1989</li>
+                            <li class="choixFiltre" data-js-cat="release_date" data-js-cat-valeur="1992" data-js-actif="0">1992</li>
+                        </div>
+                        <div>Catégorie 2<span class="material-icons">arrow_drop_down</span></div>
+                        <div>Catégorie 3<span class="material-icons">arrow_drop_down</span></div>
+                        <div>Catégorie 4<span class="material-icons">arrow_drop_down</span></div>
+                    </div>
+                </div>
+                <div>
+                    Appliqué :
+                </div>
+            </aside>
+            <section>
+                <div class="catalogue_sort">
+                    <p>Sort: <button class="material-icons md-36 btnSort">sort</button></p>
+                    <p><select name="sortBy" class="select-tri">
+                        <option value="Titre">Titre</option>
+                    </select></p>
+                    <p>Affichage: <button class="material-icons md-36 btnGrid">grid_view</button>
+                        <button class="material-icons md-36 btnList">view_list</button></p>
+                </div>
+                <section class="catalogue liste">
+                    <!-- Espace de cartes des oeuvres -->
+                </section>
+            </section>
+        </main>
+    </script>
+
+    <script type="tmpl" data-nom-tmpl="tmpl-detail-oeuvre" id="tmpl-detail-oeuvre">
+        <div class="detail_ouvre">
+            <header>
+                <h2>{{ Titre }}</h2>
+            </header>
+            <div class="contenu">
+                <p>Nom de collection: {{  NomCollection }}</p>
+                <p>Catégorie: {{ CategorieObjet }}</p>
+                <p>Mode d'acquisition: {{ ModeAcquisition }}</p>
+                <p>Adresse: {{ AdresseCivique }}</p>
+                <p>Parc: {{ Parc }}</p>
+                <p>Batiment: {{ Batiment }}</p>
+                <p>Materiaux: {{ Materiaux }}</p>
+                <p>{{ artistes }}</p>
+            </div>
+        </div>
+        <section class="commentaires liste">
+            <!-- Espace de cartes des oeuvres -->
+        </section>
+    </script>
+
+    <script type="tmpl" data-nom-tmpl="tmpl-carte-oeuvre" id="tmpl-carte-oeuvre">
+        <article class="carte">
+            <header>
+                <h2>{{ Titre }}</h2>
+                <h3>{{ NomCollection }}</h3>
+            </header>
+            <img href="#">
+            <div class="contenu">
+                <p>Adresse: {{ AdresseCivique }}</p>
+            </div>
+            <footer>
+                <p>{{ artistes }}</p>
+            </footer>
+        </article>
+    </script>
+</body>
+</html>

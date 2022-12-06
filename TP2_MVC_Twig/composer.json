@@ -1,0 +1,15 @@
+{
+    "name": "mkoda/tp2_mvc_twig",
+    "autoload": {
+        "psr-4": {
+            "Mkoda\\Tp2MvcTwig\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Raritetnik",
+            "email": "mkodarenko@gmail.com"
+        }
+    ],
+    "require": {}
+}
