@@ -1,6 +1,7 @@
+import {dataOeuvres} from "../data/oeuvresdonneesouvertes.js";
+
 export default class Catalogue{
-    #aOeuvres;
-    #domParent;
+    static #aOeuvres;
     #optionsTri = [{
         propriete: 'Titre',
         etiquette: 'Titre'
@@ -14,15 +15,11 @@ export default class Catalogue{
         etiquette: 'Parc'
     }];
 
-    constructor(domParent = null){
-        this.#domParent = domParent;
+    static chargementOeuvres(){
+        this.#aOeuvres = dataOeuvres;
     }
 
-    setOeuvres(data){
-        this.#aOeuvres = data;
-    }
-
-    getOeuvres() {
+    static getOeuvres() {
         return this.#aOeuvres;
     }
 
@@ -31,7 +28,7 @@ export default class Catalogue{
      * @param {String} carte - Object HTML de catalogue
      * @return {Array} - Données filtrés
      */
-    getCarteChoisie(id) {
+    static getCarteChoisie(id) {
         return this.#aOeuvres.find((a) => a['NumeroAccession'] == id);
     } // Works
 
@@ -45,7 +42,7 @@ export default class Catalogue{
      * @param {String} order - l'ordre d'affichage Ascendant / Descandent
      * @param {String} typeSort - Triage par ... de données
      */
-    trierAffichage(order = 'ASC', typeSort = 'Titre') {
+    static trierAffichage(order = 'ASC', typeSort = 'Titre') {
         let res = [];
         res = this.#aOeuvres.sort((a,b) => {
             if(a[`${typeSort}`] == null || b[`${typeSort}`] == null){
@@ -59,7 +56,7 @@ export default class Catalogue{
         return res;
     } // Works
 
-    renduTri() {
+    static renduTri() {
         let chaineHTML = ``;
         this.#optionsTri.forEach( (uneOption) => {
             chaineHTML += `

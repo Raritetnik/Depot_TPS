@@ -1,6 +1,5 @@
 export default class Recherche{
-    #aOeuvres;
-    #aFiltreRecherche =[{
+    static #aFiltreRecherche =[{
         propriete : "Materiaux",
         values: []
     },
@@ -37,25 +36,18 @@ export default class Recherche{
         values: []
     }];
 
-    setOeuvres(data){
-        this.#aOeuvres = data;
-
-    }
-
     /**
      * Effectuer une recherche dans la base de données
-     * @param {String} param La valeur de recherche
+     * @param {String} param.valeur La valeur de recherche
+     * @param {String} param.oeuvres La liste des oeuvres
      * @return {Array} - Données filtrés
      */
-     appliquerRecherche(param){
+     static appliquerRecherche(param){
         let res = [];
-        if(param == null){
-            res = this.#aOeuvres;
-        }
-        else{
+        if(param != null){
             this.#aFiltreRecherche.forEach(unParam => {
                 let tmpRes = [];
-                this.#aOeuvres.forEach((unElement)=>{
+                param.oeuvres.forEach((unElement)=>{
                     if(Array.isArray(unElement[unParam.propriete])) {
                         unElement[unParam.propriete].forEach((unSousElement => {
                             if(unSousElement !== undefined){
@@ -63,7 +55,7 @@ export default class Recherche{
                                     if(unSousElement[`${valeurFiltre}`] == null
                                     || unSousElement[`${valeurFiltre}`] == undefined) {
 
-                                    } else if(Recherche.compareNoAccents(unSousElement[`${valeurFiltre}`], param)) {
+                                    } else if(Recherche.compareNoAccents(unSousElement[`${valeurFiltre}`], param.valeur)) {
                                         tmpRes.push(unElement);
                                     }
                                 });
@@ -71,7 +63,7 @@ export default class Recherche{
                         }));
                     }
                     else if(!(unElement[unParam.propriete] === null || unElement[unParam.propriete] === undefined || unElement[unParam.propriete] === "")) {
-                        if(Recherche.compareNoAccents(unElement[unParam.propriete], param)) {
+                        if(Recherche.compareNoAccents(unElement[unParam.propriete], param.valeur)) {
                             tmpRes.push(unElement);
                         }
                     }
@@ -86,13 +78,16 @@ export default class Recherche{
      * Fonction enlève les accents dans les mots et fait un recherche dans le mot
      * Source: https://www.30secondsofcode.org/js/s/remove-accents
      * @param {*} texte - Texte de recherche
-     * @param {*} mot_2 - Le mot de recherche dans le texte
+     * @param {*} mot - Le mot de recherche dans le texte
      * @returns Boolean si le mot est présent dans le texte
      */
     static compareNoAccents(texte, mot) {
-        let texteNoAccents = texte.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        let motNoAccents = mot.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        return texteNoAccents.toLowerCase().includes(motNoAccents.toLowerCase())
+        if(mot !== undefined && mot !== null) {
+            let texteNoAccents = texte.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            let motNoAccents = mot.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            return texteNoAccents.toLowerCase().includes(motNoAccents.toLowerCase())
+        }
+        return null;
     } // Works
 
 

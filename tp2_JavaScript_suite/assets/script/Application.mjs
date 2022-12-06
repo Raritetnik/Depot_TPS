@@ -1,4 +1,3 @@
-import {dataOeuvres} from "../data/oeuvresdonneesouvertes.js";
 import Catalogue from "./Catalogue.mjs";
 import Filtre from "./Filtre.mjs";
 import Recherche from "./Recherche.mjs";
@@ -11,25 +10,28 @@ import Commentaires from "./Commentaire.mjs";
 
 
 export default class Application{
+    // Main
+    #domParent;
+
+
+    // Detail
+    #domDetail;
+
+    // Liste
     #oFiltre;
     #oCatalogue;
     #oRecherche;
     #_triAsc = true;
-    #oWorld
-    #oComment
 
-    #routeur;
-    #domParent;
     #domPageListe;
     #domCarte;
     #domEspaceListe;
     #domFiltreListe
-    #domDetail;
+
+    // Routeur
+    #routeur;
 
     constructor(){
-        this.#oWorld = new Geographie();
-        this.#oWorld.getRessources();
-
         this.#domParent = document.querySelector("main");
 
         // Recuperer template de liste affichage
@@ -37,71 +39,120 @@ export default class Application{
         this.#domDetail = document.querySelector('#tmpl-detail-oeuvre');
         this.#domCarte = document.querySelector('#tmpl-carte-oeuvre');
 
-        this.#oCatalogue = new Catalogue();
-        this.#oCatalogue.setOeuvres(dataOeuvres);
+        // Chargement des oeuvres
+        Catalogue.chargementOeuvres();
 
+        // Chargement des routes sur le site
         this.#routeur = new Routeur();
         this.#routeur.ajouterRoute("/liste", this.routeListe.bind(this));
         this.#routeur.ajouterRoute("/detail", this.routeDetail.bind(this));
         this.#routeur.ajouterRoute("/", this.routeAccueil.bind(this));
         this.#routeur.demarrer();
+    }
 
+    /*********************************************************************************************************************
+    **************************************************  LES ROUTES  *****************************************************
+    ********************************************************************************************************************** */
+
+    /**
+     * Affichage de la page vide
+     * @param {*} e
+     */
+     routeAccueil(e) {
+        let elm = document.createElement('div');
+        Affichage.afficher(" ", elm, this.#domParent);
     }
 
     /**
      * Affichage de la liste des oeuvres
-     * @param {*} e
      */
     routeListe(e) {
+        // Premiere affichage
         Affichage.afficher("", this.#domPageListe, this.#domParent);
         this.#domFiltreListe = document.querySelector('.liste-categorie');
         this.#domEspaceListe = document.querySelector('.catalogue');
 
-        this.#oCatalogue.setOeuvres(dataOeuvres);
-
-        this.#oRecherche = new Recherche();
-        this.#oRecherche.setOeuvres(dataOeuvres);
-
+        // Chargement des filtres
         this.#oFiltre = new Filtre(this.#domFiltreListe);
-        this.#oFiltre.setCategorie(dataOeuvres);
+        this.#oFiltre.setCategorie(Catalogue.getOeuvres());
         this.#oFiltre.rendu();
 
-        Affichage.afficher(dataOeuvres, this.#domCarte, this.#domEspaceListe);
-
+        Affichage.afficher(Catalogue.getOeuvres(), this.#domCarte, this.#domEspaceListe);
         let infoRoute = this.#routeur.getInfoRoute();
-        console.log(Object.keys(infoRoute.parametre).length > 0);
         if(Object.keys(infoRoute.parametre).length > 0) {
-            this.appliquerParams(infoRoute);
+            this.appliquerParamsListe(infoRoute.parametre);
         }
 
-        this.reactionEvenement();
+        this.gestionEvenementListe();
     }
 
-    appliquerParams(infoRoute) {
-        if(infoRoute.parametre['ordre'] != undefined) {
+    /**
+     * Affichage de l'oeuvre en détail
+     * @param {*} e
+     */
+     routeDetail(e) {
+        let infoRoute = this.#routeur.getInfoRoute();
+        Affichage.afficher(Catalogue.getCarteChoisie(infoRoute.parametre['id']), this.#domDetail, this.#domParent);
+        const domComment = document.querySelector('#tmpl-commentaire');
+        const domEspaceComment = document.querySelector('.commentaires');
+
+        let params = {
+            id: infoRoute.parametre['id']
+        }
+        params.cb = ((comments) => {
+            Affichage.afficher(comments, domComment, domEspaceComment)
+        });
+        Commentaires.getListe(params);
+
+        this.gestionEvenementDetail();
+    }
+
+    /*********************************************************************************************************************
+    **************************************************  GESTION URL  *****************************************************
+    ********************************************************************************************************************** */
+
+    /**
+     * Gestion des paramètres dans URL de la liste
+     * @param {*} variables.ordre - L'ordre ASC / DESC
+     * @param {*} variables.tri - Le type de filtre
+     *
+     * @param {*} variables.catVal - Valeur de la Catégorie
+     * @param {*} variables.cat - Nom de la Catégorie
+     *
+     * @param {*} variables.recherche - La valeur de recherche
+     */
+    appliquerParamsListe(variables) {
+        if(variables['ordre'] != undefined) {
             Affichage.afficher(
-                this.#oCatalogue.trierAffichage(infoRoute.parametre.ordre, infoRoute.parametre.tri),
+                Catalogue.trierAffichage(variables.ordre, variables.tri),
                 this.#domCarte,
                 this.#domEspaceListe
             );
         }
-        if(infoRoute.parametre['catVal'] !== undefined) {
+        if(variables['catVal'] !== undefined) {
             let param = {
-                cat: infoRoute.parametre['cat'],
-                valeur : infoRoute.parametre['catVal']
+                cat: variables['cat'],
+                valeur : decodeURI(variables['catVal'])
             };
             let dataFiltre = this.#oFiltre.appliquerFiltre(param);
             Affichage.afficher(dataFiltre, this.#domCarte, this.#domEspaceListe);
         }
-        if(infoRoute.parametre['search'] != undefined) {
-            let listeOeuvres = this.#oRecherche.appliquerRecherche(infoRoute.parametre['search']);
-            Affichage.afficher(listeOeuvres,
+        if(variables['recherche'] != undefined) {
+            let param = {
+                valeur: variables['recherche'],
+                oeuvres: Catalogue.getOeuvres()
+            }
+            Affichage.afficher(Recherche.appliquerRecherche(param),
             this.#domCarte,
             this.#domEspaceListe);
         }
     }
 
-    reactionEvenement() {
+    /*********************************************************************************************************************
+    **************************************************  GESTION EVENEMENTS  **********************************************
+    ********************************************************************************************************************** */
+
+    gestionEvenementListe() {
         const typeAffichage = document.querySelector('.catalogue_sort');
 
         // Fonctionnalités de triage du contenu
@@ -127,54 +178,59 @@ export default class Application{
             }
         });
 
-
         // Fonctionnalités de recherche
         const domBtnRecherche = document.querySelector(".btn-rechercher");
-        this.#oRecherche = new Recherche();
-        this.#oRecherche.setOeuvres(dataOeuvres);
-        domBtnRecherche.addEventListener('mousedown', this.appliquerRecherche.bind(this));
+        domBtnRecherche.addEventListener('mousedown', () => {
+            const valeurRecherche = document.querySelector('[name="champs-rechercher"]').value;
+            this.#routeur.naviguer("/liste?recherche="+valeurRecherche, true);
+        });
 
         // Fonctionnalités de categories
         this.#domFiltreListe.addEventListener("mousedown", this.appliquerFiltre.bind(this));
         this.#domFiltreListe.addEventListener("mousedown", this.afficherFiltres.bind(this));
     }
 
-    /**
-     * Affichage de l'oeuvre en détail
-     * @param {*} e
-     */
+    gestionEvenementDetail() {
+        //let optionDOM = "<option value='{{ id }}'>{{ name }}</option>";
+        let params = {};
+        let optionDOM = document.createElement('div');
+        optionDOM.innerHTML = "<option value='{{ iso2 }}'>{{ name }}</option>";
 
-    routeDetail(e) {
-        let infoRoute = this.#routeur.getInfoRoute();
-        console.log(this.#oCatalogue);
-        let data = this.#oCatalogue.getCarteChoisie(infoRoute.parametre['id']);
-        Affichage.afficher(data, this.#domDetail, this.#domParent);
-        const domComment = document.querySelector('#tmpl-commentaire');
-        const domEspaceComment = document.querySelector('.commentaires');
+        const selectPays = document.querySelector('#Pays');
+        const selectEtat = document.querySelector('#Etat');
+        const selectVille = document.querySelector('#Ville');
 
-        this.#oComment = new Commentaires();
+        params.callback = ((data) => {
+            Affichage.afficher(data, optionDOM, selectPays);
+        });
+        //Geographie.getPays(params);
 
-        let params = {
-            id: infoRoute.parametre['id']
-        }
-        params.cb = ((comments) => {
-            console.log(comments);
-            console.log(domComment);
-            console.log(domEspaceComment);
-            Affichage.afficher(comments, domComment, domEspaceComment)
+        selectPays.addEventListener('change', (e) => {
+            console.log(e.target.value);
+            params.paysCode = e.target.value;
+            params.callback = ((data) => {
+                Affichage.afficher(data, optionDOM, selectEtat);
+            });
+            Geographie.getEtatParPays(params);
         });
 
-        this.#oComment.getCommentaires(params);
+        selectEtat.addEventListener('change', (e) => {
+            params.etatCode = e.target.value;
+            params.callback = ((data) => {
+                Affichage.afficher(data, optionDOM, selectVille);
+            });
+            console.log(params);
+            Geographie.getVilleParPaysEtat(params);
+        });
+
+        selectEtat.addEventListener('change', (e) => {
+            e.target.value;
+        });
     }
 
-    /**
-     * Affichage de la liste des oeuvres
-     * @param {*} e
-     */
-    routeAccueil(e) {
-        Affichage.afficher(" ", this.#domParent, this.#domParent);
-    }
-
+    /*********************************************************************************************************************
+    **************************************************  LES FILTRES  *****************************************************
+    ********************************************************************************************************************** */
     /**
      * Fonctionnalités d'affichage des options de catégorie
      * @param {*} e
@@ -188,6 +244,10 @@ export default class Application{
         this.#domFiltreListe.innerHTML = this.#oFiltre.rendu();
     }
 
+    /**
+     * Application des filtres sur les catégories
+     * @param {*} e
+     */
     appliquerFiltre(e){
         const cible = e.target;
         let dataFiltre;
@@ -205,46 +265,9 @@ export default class Application{
                     unElement.dataset.jsActif = 0;
                 })
                 cible.dataset.jsActif = 1;
-                console.log(param);
                 dataFiltre = this.#oFiltre.appliquerFiltre(param);
             }
             this.#routeur.naviguer("/liste?cat="+cible.dataset.jsCat+"&catVal="+cible.dataset.jsCatValeur, true);
-        }
-    }
-
-    /**
-     * Recherche
-     */
-    appliquerRecherche() {
-        const domCaseRecherche = document.querySelector("[name='champs-rechercher']");
-        let listeOeuvres = this.#oRecherche.appliquerRecherche(domCaseRecherche.value.trim());
-        this.#routeur.naviguer("/liste?search="+domCaseRecherche.value.trim(),true);
-        Affichage.afficher(listeOeuvres,
-        this.#domCarte,
-        this.#domEspaceListe);
-    }
-
-
-    afficherCarteInfo(e) {
-        const domAffichageInfo = document.querySelector(".block-info");
-        const domAffichageInfoContenu = document.querySelector(".block-info .contenu");
-
-        domAffichageInfo.addEventListener('click', (e) => {
-            let cible = e.target;
-            if(cible.classList.contains('fermer-popup')) {
-                domAffichageInfo.classList.add('invisible');
-                domAffichageInfo.addEventListener('transitionend', () => {
-                    domAffichageInfo.classList.add('remove');
-                });
-            }
-        })
-
-        const cible = e.target;
-        if(cible.closest('.carte') != null) {
-            const carteChoisie = this.#oCatalogue.getCarteChoisie(cible.closest('.carte'));
-            domAffichageInfo.classList.remove('remove');
-            domAffichageInfo.classList.remove('invisible');
-            domAffichageInfoContenu.innerHTML = carteChoisie;
         }
     }
 }

@@ -275,3 +275,14 @@ Tri de catalogue
     border: 2px solid black;
     margin: 10px;
 }
+
+.detail-form {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.commentaire {
+    padding: 10px;
+    border: 2px solid black;
+}
