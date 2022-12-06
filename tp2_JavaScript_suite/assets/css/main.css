@@ -262,3 +262,16 @@ Tri de catalogue
     padding: 5px;
     margin: 0;
 }
+
+.detail_ouvre {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment {
+    padding: 10px;
+    min-height: 60px;
+    border: 2px solid black;
+    margin: 10px;
+}

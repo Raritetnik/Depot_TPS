@@ -31,6 +31,10 @@ export default class Recherche{
     {
         propriete : "Artistes",
         values: ['Nom', 'Prenom']
+    },
+    {
+        propriete : "Titre",
+        values: []
     }];
 
     setOeuvres(data){
@@ -72,7 +76,6 @@ export default class Recherche{
                         }
                     }
                 });
-                console.log(tmpRes);
                 tmpRes.forEach(a => res.push(a));
             });
         }

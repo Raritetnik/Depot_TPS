@@ -14,7 +14,7 @@ export default class Catalogue{
         etiquette: 'Parc'
     }];
 
-    constructor(domParent){
+    constructor(domParent = null){
         this.#domParent = domParent;
     }
 
@@ -22,45 +22,17 @@ export default class Catalogue{
         this.#aOeuvres = data;
     }
 
+    getOeuvres() {
+        return this.#aOeuvres;
+    }
+
     /**
      * Applique les filtres sur les données en fonction des paramètres
      * @param {String} carte - Object HTML de catalogue
      * @return {Array} - Données filtrés
      */
-    getCarteChoisie(carte) {
-        const titreCarte = carte.querySelector('h2');
-        let oReche;
-        let chaineHTML = ``;
-
-        this.#aOeuvres.forEach(unOeuvre => {
-            if(titreCarte.innerHTML === unOeuvre.Titre) {
-                oReche = unOeuvre;
-            }
-        });
-        let artistes = ``;
-            oReche.Artistes.forEach(unArtiste => {
-                let nom = (unArtiste.Nom == null) ? "": unArtiste.Nom;
-                let prenom = (unArtiste.Prenom == null) ? "": unArtiste.Prenom;
-                if(nom == "" && prenom == "") {
-                    prenom = 'Auteur inconnue';
-                }
-                artistes += "<p>Artiste(s): "+prenom+" "+nom+"</p>";
-            })
-        chaineHTML += `
-            <header>
-                <h2>${oReche.Titre}</h2>
-            </header>
-            <div class="contenu">
-                <p>Nom de collection: ${oReche.NomCollection}</p>
-                <p>Catégorie: ${oReche.CategorieObjet}</p>
-                <p>Mode d'acquisition: ${oReche.ModeAcquisition}</p>
-                <p>Adresse: ${oReche.AdresseCivique}</p>
-                <p>Parc: ${oReche.Parc}</p>
-                <p>Batiment: ${oReche.Batiment}</p>
-                <p>Materiaux: ${oReche.Materiaux}</p>
-                ${artistes}
-            </div>`;
-        return chaineHTML;
+    getCarteChoisie(id) {
+        return this.#aOeuvres.find((a) => a['NumeroAccession'] == id);
     } // Works
 
 

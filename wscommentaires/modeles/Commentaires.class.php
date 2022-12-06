@@ -2,21 +2,21 @@
 /**
  * Class Modele
  * Les modèles doivent hérités de cette classe.
- * 
+ *
  * @author Jonathan Martel
  * @version 1.0
  * @update 2013-12-11
  * @license MIT
- * 
+ *
  */
 class Commentaires extends Modele{
 	const TABLE_COMMENTAIRE = "commentaire";
-    
-	
+
+
 	function lire($id){
 		$res = Array();
 		$stmt = $this->_db->prepare("select * from ".self::TABLE_COMMENTAIRE. " where id_element= ?");
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $id);
         if($stmt->execute())
         {
             if($mrResultat = $stmt->get_result())
@@ -24,7 +24,7 @@ class Commentaires extends Modele{
                 $res = $mrResultat->fetch_all(MYSQLI_ASSOC);
             }
         }
-		
+
 		return $res;
 	}
 
@@ -32,7 +32,7 @@ class Commentaires extends Modele{
 		$res = false;
         if(extract($data) > 0)
 		{
-			//$image = $image || "";	
+			//$image = $image || "";
             $stmt = $this->_db->prepare("INSERT INTO ".self::TABLE_COMMENTAIRE. " (id_element, nom, prenom, pays, etat,ville, commentaire) VALUES (?,?,?,?,?,?,?)");
             $stmt->bind_param("sssssss", $id, $nom, $prenom, $pays, $etat, $ville, $commentaire);
             $stmt->execute();
@@ -40,9 +40,9 @@ class Commentaires extends Modele{
             {
                 $res = true;
             }
-			
+
 		}
-				
+
 		return ( $res ? $stmt->insert_id : 0);
 	}
 
@@ -62,15 +62,15 @@ class Commentaires extends Modele{
     function effacer($id){
 		$res = false;
 		$stmt = $this->_db->prepare("delete * from ".self::TABLE_COMMENTAIRE. " where id_element= ?");
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $id);
         if($stmt->execute())
         {
             $res = $stmt->get_result();
-            
+
         }
 		return $res;
 	}
-    
+
 }
 
 

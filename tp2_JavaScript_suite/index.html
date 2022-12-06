@@ -15,7 +15,7 @@
 </head>
 <body>
     <header class="top-nav">
-        <span class="logo"><a href="#">Archive des Oeuvres d'Art</a></span>
+        <span class="logo"><a href="#!/">Archive des Oeuvres d'Art</a></span>
         <span class="filler"></span>
         <nav class="menuPrincipal">
             <a href="#!/liste">Liste Oeuvres</a>
@@ -85,12 +85,49 @@
                 <p>Parc: {{ Parc }}</p>
                 <p>Batiment: {{ Batiment }}</p>
                 <p>Materiaux: {{ Materiaux }}</p>
-                <p>{{ artistes }}</p>
             </div>
+            <section class="commentaires liste">
+                <!-- Espace de cartes des oeuvres -->
+            </section>
         </div>
-        <section class="commentaires liste">
-            <!-- Espace de cartes des oeuvres -->
-        </section>
+    </script>
+
+    <script type="tmpl" data-nom-tmpl="tmpl-commentaire-create" id="tmpl-commentaire-create">
+        <article class="comment">
+            <header>
+                <input type="text" name="Nom" id="Nom">
+                <input type="text" name="Prenom" id="Prenom">
+                <input type="text" name="Courriel" id="Courriel">
+            </header>
+            <div class="contenu">
+                <select name="Pays" id="Pays">
+                    <option value=""></option>
+                </select>
+                <select name="Etat" id="Etat">
+                    <option value=""></option>
+                </select>
+                <select name="Ville" id="Ville">
+                    <option value=""></option>
+                </select>
+            </div>
+            <footer>
+                <textarea name="Commentaire" id="Commentaire" cols="30" rows="10"></textarea>
+            </footer>
+        </article>
+    </script>
+
+    <script type="tmpl" data-nom-tmpl="tmpl-commentaire" id="tmpl-commentaire">
+        <article class="comment">
+            <header>
+               <h2>{{ prenom }} {{ nom }}</h2>
+            </header>
+            <div class="contenu">
+                <small>{{ pays }}, {{ etat }}, {{ ville }}</small>
+            </div>
+            <footer>
+                <p>{{ commentaire }}</p>
+            </footer>
+        </article>
     </script>
 
     <script type="tmpl" data-nom-tmpl="tmpl-carte-oeuvre" id="tmpl-carte-oeuvre">
@@ -102,9 +139,9 @@
             <img href="#">
             <div class="contenu">
                 <p>Adresse: {{ AdresseCivique }}</p>
+                <a href="#!/detail?id={{ NumeroAccession }}">Voir en détail</a>
             </div>
             <footer>
-                <p>{{ artistes }}</p>
             </footer>
         </article>
     </script>
