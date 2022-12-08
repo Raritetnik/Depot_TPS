@@ -93,14 +93,21 @@ export default class Application{
      routeDetail(e) {
         let infoRoute = this.#routeur.getInfoRoute();
         Affichage.afficher(Catalogue.getCarteChoisie(infoRoute.parametre['id']), this.#domDetail, this.#domParent);
+
+        // Affichage des artistes
+        const artistes = document.querySelector('.detail-artistes');
+        const domArtiste = document.querySelector('#tmpl-detail-artistes');
+        Affichage.afficher(Catalogue.getCarteChoisie(infoRoute.parametre['id'])['Artistes'], domArtiste, artistes)
+
+        // Affichage des commentaires
         const domComment = document.querySelector('#tmpl-commentaire');
         const domEspaceComment = document.querySelector('.commentaires');
-
         let params = {
             id: infoRoute.parametre['id']
         }
         params.cb = ((comments) => {
-            Affichage.afficher(comments, domComment, domEspaceComment)
+            Affichage.afficher(comments, domComment, domEspaceComment);
+
         });
         Commentaires.getListe(params);
 
@@ -152,6 +159,10 @@ export default class Application{
     **************************************************  GESTION EVENEMENTS  **********************************************
     ********************************************************************************************************************** */
 
+    /**
+     * Tout les initialisation des evenement sur la page de liste
+     * Gestion de commentaires
+     */
     gestionEvenementListe() {
         const typeAffichage = document.querySelector('.catalogue_sort');
 
@@ -190,42 +201,73 @@ export default class Application{
         this.#domFiltreListe.addEventListener("mousedown", this.afficherFiltres.bind(this));
     }
 
+    /**
+     * Tout les initialisation des evenement sur la page de details
+     * Gestion de commentaires
+     */
     gestionEvenementDetail() {
-        //let optionDOM = "<option value='{{ id }}'>{{ name }}</option>";
         let params = {};
         let optionDOM = document.createElement('div');
-        optionDOM.innerHTML = "<option value='{{ iso2 }}'>{{ name }}</option>";
+        optionDOM.innerHTML = "<option data-iso='{{ iso2 }}' value='{{ name }}'>{{ name }}</option>";
 
         const selectPays = document.querySelector('#Pays');
         const selectEtat = document.querySelector('#Etat');
         const selectVille = document.querySelector('#Ville');
+        const btnSauve = document.querySelector('#soumettre');
+        btnSauve.addEventListener('click', () => {
+            var route = this.#routeur.getInfoRoute()
+            const formulaitre = document.querySelector('.commentaire');
+            console.log(formulaitre);
+            let data = {}
+            data.id = route.parametre['id'];
+            data.nom = formulaitre.querySelector('[name="Nom"]').value;
+            data.prenom = formulaitre.querySelector('[name="Prenom"]').value;
+            data.courriel = formulaitre.querySelector('[name="Courriel"]').value;
+
+            data.pays = formulaitre.querySelector('[name="Pays"]').value;
+            data.etat = formulaitre.querySelector('[name="Etat"]').value;
+            data.ville = formulaitre.querySelector('[name="Ville"]').value;
+
+            data.commentaire = formulaitre.querySelector('[name="Commentaire"]').value;
+
+            console.log(data.pays);
+            Commentaires.ajouterCommentaire(data);
+            this.#routeur.naviguer('/detail?id='+route.parametre['id'], true);
+        });
 
         params.callback = ((data) => {
             Affichage.afficher(data, optionDOM, selectPays);
         });
-        //Geographie.getPays(params);
+        Geographie.getPays(params);
+        //data.pays = pays.options[pays.selectedIndex].getAttribute("data-iso");
 
         selectPays.addEventListener('change', (e) => {
-            console.log(e.target.value);
-            params.paysCode = e.target.value;
+            params.paysCode = e.target.options[e.target.selectedIndex].getAttribute("data-iso");
             params.callback = ((data) => {
+                if(data.length == 0) {
+                    selectEtat.setAttribute('disabled', '');
+                    params.callback = ((data) => {
+                        Affichage.afficher(data, optionDOM, selectVille);
+                    });
+                    Geographie.getVilleParPays(params);
+                } else {
+                    selectEtat.removeAttribute('disabled', '');
+                }
                 Affichage.afficher(data, optionDOM, selectEtat);
             });
             Geographie.getEtatParPays(params);
         });
 
+
+
         selectEtat.addEventListener('change', (e) => {
-            params.etatCode = e.target.value;
+            params.etatCode = e.target.options[e.target.selectedIndex].getAttribute("data-iso");
             params.callback = ((data) => {
                 Affichage.afficher(data, optionDOM, selectVille);
             });
-            console.log(params);
             Geographie.getVilleParPaysEtat(params);
         });
 
-        selectEtat.addEventListener('change', (e) => {
-            e.target.value;
-        });
     }
 
     /*********************************************************************************************************************

@@ -72,6 +72,10 @@
         </main>
     </script>
 
+    <script type="tmpl" data-nom-tmpl="tmpl-detail-artistes" id="tmpl-detail-artistes">
+        <li>{{ Nom }} {{ Prenom }}</li>
+    </script>
+
     <script type="tmpl" data-nom-tmpl="tmpl-detail-oeuvre" id="tmpl-detail-oeuvre">
         <div class="detail_ouvre">
             <div class="detail-form">
@@ -84,6 +88,11 @@
                     <p>Parc: {{ Parc }}</p>
                     <p>Batiment: {{ Batiment }}</p>
                     <p>Materiaux: {{ Materiaux }}</p>
+                    <p>Artistes:
+                        <ul class='detail-artistes'>
+
+                        </ul>
+                    </p>
                 </div>
                 <form class="commentaire" action='POST'>
                     <header>
@@ -92,50 +101,29 @@
                         <p>Courriel:<input type="text" name="Courriel" id="Courriel"></p>
                     </header>
                     <div class="contenu">
-                        <select name="Pays" id="Pays">
-                            <option value="">-- Pays --</option>
+                        <select name="Pays" id="Pays" required>
+                            <option>-- Pays --</option>
+                            <option data-iso='CA' value="Canada">Canada</option>
                         </select>
-                        <select name="Etat" id="Etat">
-                            <option value="">-- Etat --</option>
+                        <select name="Etat" id="Etat" required>
+                            <option>-- Etat --</option>
+                            <option data-iso='QC' value="Quebec">Quebec</option>
                         </select>
-                        <select name="Ville" id="Ville">
-                            <option value="">-- Ville --</option>
+                        <select name="Ville" id="Ville" required>
+                            <option>-- Ville --</option>
+                            <option data-iso='MR' value="Montreal">Montreal</option>
                         </select>
                     </div>
                     <footer>
                         <textarea name="Commentaire" id="Commentaire" cols="30" rows="10"></textarea>
                     </footer>
-                    <input type="submit" value="Envoyer">
+                    <input id='soumettre' type="button" value="Envoyer">
                 </form>
             </div>
             <section class="commentaires liste">
                 <!-- Espace de cartes des oeuvres -->
             </section>
         </div>
-    </script>
-
-    <script type="tmpl" data-nom-tmpl="tmpl-commentaire-create" id="tmpl-commentaire-create">
-        <article class="comment">
-            <header>
-                <input type="text" name="Nom" id="Nom">
-                <input type="text" name="Prenom" id="Prenom">
-                <input type="text" name="Courriel" id="Courriel">
-            </header>
-            <div class="contenu">
-                <select name="Pays" id="Pays">
-                    <option value=""></option>
-                </select>
-                <select name="Etat" id="Etat">
-                    <option value=""></option>
-                </select>
-                <select name="Ville" id="Ville">
-                    <option value=""></option>
-                </select>
-            </div>
-            <footer>
-                <textarea name="Commentaire" id="Commentaire" cols="30" rows="10"></textarea>
-            </footer>
-        </article>
     </script>
 
     <script type="tmpl" data-nom-tmpl="tmpl-commentaire" id="tmpl-commentaire">
