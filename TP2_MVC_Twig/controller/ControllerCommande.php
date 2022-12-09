@@ -28,43 +28,52 @@ class ControllerCommande{
      * Creation d'une donnée de commande
      */
     public function create(){
-        $livres = $this->_livre->select();
-        $factures = $this->_facture->selectWith();
-        twig::render("commande/commande-create.php", ['livres' => $livres,
-                                                        'factures' => $factures]);
+        if ($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $livres = $this->_livre->select();
+            $factures = $this->_facture->selectWith();
+            twig::render("commande/commande-create.php", [
+                'livres' => $livres,
+                'factures' => $factures
+            ]);
+        } else {
+            RequirePage::redirectPage("commande");
+        }
     }
     public function save() {
-        $data = $_POST;
-        echo("<pre>");
-        print_r($data);
-        echo("</pre>");
-        $this->_commande->insert($data);
-
+        if ($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $data = $_POST;
+            $this->_commande->insert($data);
+            SystemJournal::createNote("Création de Commande sur Livre: [ID:".$data['Livre_id']."] Facture: [ID:".$data['Facture_id']."] par administrateur");
+        }
         RequirePage::redirectPage("commande");
     }
     /**
      * Modifier la donnée de commande
      */
     public function modifier($id){
-        if(!isset($id)) {
+        if ($_SESSION['lvlAccess'] >= Crud::$ModeratorLVL) {
+            if (!isset($id)) {
+                RequirePage::redirectPage("commande");
+            }
+
+            $commande = $this->_commande->selectId($id);
+            $livres = $this->_livre->select();
+            $factures = $this->_facture->selectWith();
+            twig::render("commande/commande-modifier.php", ['commande' => $commande,
+                'livres' => $livres,
+                'factures' => $factures
+            ]);
+        } else {
             RequirePage::redirectPage("commande");
         }
-
-        $commande = $this->_commande->selectId($id);
-        $livres = $this->_livre->select();
-        $factures = $this->_facture->selectWith();
-        twig::render("commande/commande-modifier.php", ['commande' => $commande,
-                                                  'livres' => $livres,
-                                                  'factures' => $factures]);
     }
 
     public function update() {
-        $data = $_POST;
-        echo('<pre>');
-        print_r($data);
-        echo('<.pre>');
-        $this->_commande->update($data);
-
+        if ($_SESSION['lvlAccess'] >= Crud::$ModeratorLVL) {
+            $data = $_POST;
+            $this->_commande->update($data);
+            SystemJournal::createNote("Modification de Commande sur Livre: [ID:".$data['Livre_id']."] Facture: [ID:".$data['Facture_id']."] par administrateur");
+        }
         RequirePage::redirectPage("commande");
     }
 
@@ -72,8 +81,11 @@ class ControllerCommande{
      * Supprimer la donnée de commande
      */
     function delete($id) {
-        $this->_commande->delete($id);
-
+        if ($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $commande = $this->_commande->selectId($id);
+            $this->_commande->delete($id);
+            SystemJournal::createNote("Suppression de Commande sur Livre: [ID:".$commande['Livre_id']."] Facture: [ID:".$commande['Facture_id']."] par administrateur");
+        }
         RequirePage::redirectPage("commande");
     }
 }

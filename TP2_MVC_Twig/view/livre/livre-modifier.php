@@ -1,3 +1,4 @@
+{{ include('main-menu.php', {title: 'Livre', pageHeader: 'Livre modification'})}}
 <main>
     <form action="../update" method="POST" class="form-box">
         <label for="">Titre:

@@ -1,3 +1,4 @@
+{{ include('main-menu.php', {title: 'Facture', pageHeader: 'Facture creation'})}}
 <main>
     <form action="save" method="POST" class="form-box">
         <label for="">Date de facturation:

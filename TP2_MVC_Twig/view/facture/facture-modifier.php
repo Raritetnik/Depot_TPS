@@ -1,3 +1,4 @@
+{{ include('main-menu.php', {title: 'Facture', pageHeader: 'Facture modification'})}}
 <main>
     <form action="../update" method="POST" class="form-box">
         <label for="">Date de facturation:

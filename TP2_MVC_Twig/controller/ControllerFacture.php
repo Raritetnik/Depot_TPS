@@ -31,41 +31,56 @@ class ControllerFacture{
      * Creation d'une donnée de facture
      */
     public function create(){
-        $livraisons = $this->_livraison->select();
-        $paiements = $this->_paiement->select();
-        $membres = $this->_membre->select();
-        twig::render("facture/facture-create.php", ['livraisons' => $livraisons,
-                                                'paiements' => $paiements,
-                                                'membres' => $membres]);
+        if ($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $livraisons = $this->_livraison->select();
+            $paiements = $this->_paiement->select();
+            $membres = $this->_membre->select();
+            twig::render("facture/facture-create.php", [ 'livraisons' => $livraisons,
+                'paiements' => $paiements,
+                'membres' => $membres
+            ]);
+        } else {
+            RequirePage::redirectPage("facture");
+        }
     }
     public function save() {
-        $data = $_POST;
-        $this->_facture->insert($data);
-
+        if ($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $data = $_POST;
+            $this->_facture->insert($data);
+            SystemJournal::createNote("Création de Facture sur date: \"".$data['date']."\"  par administrateur");
+        }
         RequirePage::redirectPage("facture");
     }
     /**
      * Modifier la donnée du facture
      */
     public function modifier($id){
-        if(!isset($id)) {
+        if ($_SESSION['lvlAccess'] >= Crud::$ModeratorLVL) {
+            if (!isset($id)) {
+                RequirePage::redirectPage("facture");
+            }
+
+            $facture = $this->_facture->selectId($id);
+            $livraisons = $this->_livraison->select();
+            $paiements = $this->_paiement->select();
+            $membres = $this->_membre->select();
+            twig::render("facture/facture-modifier.php", [
+                'facture' => $facture,
+                'livraisons' => $livraisons,
+                'paiements' => $paiements,
+                'membres' => $membres
+            ]);
+        } else {
             RequirePage::redirectPage("facture");
         }
-
-        $facture = $this->_facture->selectId($id);
-        $livraisons = $this->_livraison->select();
-        $paiements = $this->_paiement->select();
-        $membres = $this->_membre->select();
-        twig::render("facture/facture-modifier.php", ['facture' => $facture,
-                                                'livraisons' => $livraisons,
-                                                'paiements' => $paiements,
-                                                'membres' => $membres]);
     }
 
     public function update() {
-        $data = $_POST;
-        $this->_facture->update($data);
-
+        if ($_SESSION['lvlAccess'] >= Crud::$ModeratorLVL) {
+            $data = $_POST;
+            $this->_facture->update($data);
+            SystemJournal::createNote("Modification de Facture sur \"".$data['Nom']."\" [ID:".$data['id']."] par administrateur");
+        }
         RequirePage::redirectPage("facture");
     }
 
@@ -73,8 +88,11 @@ class ControllerFacture{
      * Supprimer la donnée de facture
      */
     function delete($id) {
-        $this->_facture->delete($id);
-
+        if ($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $facture = $this->_facture->selectId($id);
+            $this->_facture->delete($id);
+            SystemJournal::createNote("Suppression de Facture sur \"".$facture['date']."\" [ID:".$facture['id']."] par administrateur");
+        }
         RequirePage::redirectPage("facture");
     }
 }

@@ -1,5 +1,9 @@
 <?php
 class Crud extends PDO{
+
+    public static $AdminLVL = 2;
+    public static $ModeratorLVL = 1;
+
     public function __construct() {
         parent::__construct("mysql:host=localhost;dbname=librairie; port=3306; charset=utf8",
         "root", "");

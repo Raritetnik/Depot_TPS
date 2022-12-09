@@ -1,11 +1,10 @@
-<?php
-require_once("connex/Crud.php");
-?>
-
+{{ include('main-menu.php', {title: 'Commande', pageHeader: 'Commande liste'})}}
 <body>
     <main>
         <h1>Commande</h1>
-        <a href="commande/create" class="bouton">+ Ajouter une commande</a>
+        {% if session.lvlAccess >= 2 %}
+            <a href="commande/create" class="bouton">+ Ajouter une commande</a>
+        {% endif %}
         <table>
             <thead>
                 <tr>
@@ -24,8 +23,12 @@ require_once("connex/Crud.php");
                         <td>{{ commande.quantite }}</td>
                         <td>{{ commande.prixTotal }}</td>
                         <td>{{ commande.Nom }}</td>
-                        <td class='modify'><a href='commande/modifier/{{ commande.Livre_id }}_{{ commande.Facture_id }}'>Modifier</a></td>
-                        <td class='delete'><a href='commande/delete{{ commande.Livre_id }}_{{ commande.Facture_id }}'>Supprimer</a></td>
+                        {% if session.lvlAccess >= 1 %}
+                            <td class='modify'><a href='commande/modifier/{{ commande.Livre_id }}_{{ commande.Facture_id }}'>Modifier</a></td>
+                        {% endif %}
+                        {% if session.lvlAccess >= 2 %}
+                            <td class='delete'><a href='commande/delete{{ commande.Livre_id }}_{{ commande.Facture_id }}'>Supprimer</a></td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
             {% endif %}

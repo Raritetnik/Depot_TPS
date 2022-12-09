@@ -1,3 +1,4 @@
+{{ include('../main-menu.php', {title: 'Membre', pageHeader: 'Membre creation'})}}
 <main>
     <form action="save" method="POST" class="form-box">
         <label for="">Nom:

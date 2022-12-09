@@ -9,4 +9,8 @@ class ControllerHome{
     public function error(){
       twig::render('home/home-error.php');
     }
+
+    public function login() {
+
+    }
 }

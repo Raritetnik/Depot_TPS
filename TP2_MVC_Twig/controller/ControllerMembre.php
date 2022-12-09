@@ -21,31 +21,43 @@ class ControllerMembre{
      * Creation d'une donnée de membre
      */
     public function create(){
-        $membres = $this->_membre->select();
-        twig::render("membre/membre-create.php", ['membres' => $membres]);
+        if ($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $membres = $this->_membre->select();
+            twig::render("membre/membre-create.php", ['membres' => $membres]);
+        } else {
+            RequirePage::redirectPage("membre");
+        }
     }
     public function save() {
-        $data = $_POST;
-        $this->_membre->insert($data);
-
+        if ($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $data = $_POST;
+            $this->_membre->insert($data);
+            SystemJournal::createNote("Création de Membre: \"".$data['Nom']."\"  par administrateur");
+        }
         RequirePage::redirectPage("membre");
     }
     /**
      * Modifier la donnée du membre
      */
     public function modifier($id){
-        if(!isset($id)) {
+        if ($_SESSION['lvlAccess'] >= Crud::$ModeratorLVL) {
+            if (!isset($id)) {
+                RequirePage::redirectPage("membre");
+            }
+
+            $membre = $this->_membre->selectId($id);
+            twig::render("membre/membre-modifier.php", ['membre' => $membre]);
+        } else {
             RequirePage::redirectPage("membre");
         }
-
-        $membre = $this->_membre->selectId($id);
-        twig::render("membre/membre-modifier.php", ['membre' => $membre]);
     }
 
     public function update() {
-        $data = $_POST;
-        $this->_membre->update($data);
-
+        if ($_SESSION['lvlAccess'] >= Crud::$ModeratorLVL) {
+            $data = $_POST;
+            $this->_membre->update($data);
+            SystemJournal::createNote("Modification de Membre: \"".$data['Nom']."\" [ID:".$data['id']."] par administrateur");
+        }
         RequirePage::redirectPage("membre");
     }
 
@@ -53,9 +65,12 @@ class ControllerMembre{
      * Supprimer la donnée de membre
      */
     function delete() {
-        $id = $_GET['id'];
-        $this->_membre->delete($id);
-
+        if($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $id = $_GET['id'];
+            $membre = $this->_membre->selectId($id);
+            $this->_membre->delete($id);
+            SystemJournal::createNote("Suppression de Membre \"".$membre['Nom']."\" [ID:".$id."] par administrateur");
+        }
         RequirePage::redirectPage("membre");
     }
 }

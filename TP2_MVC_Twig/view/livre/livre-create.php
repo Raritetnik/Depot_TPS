@@ -1,3 +1,4 @@
+{{ include('main-menu.php', {title: 'Livre', pageHeader: 'Livre creation'})}}
 <main>
     <form action="save" method="POST" class="form-box">
         <label for="">Titre:

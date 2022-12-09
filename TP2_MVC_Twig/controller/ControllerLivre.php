@@ -28,37 +28,52 @@ class ControllerLivre{
      * Creation d'une donnée de livre
      */
     public function create(){
-        $editeurs = $this->_editeur->select();
-        $categories = $this->_categorie->select();
-        twig::render("livre/livre-create.php", ['editeurs' => $editeurs,
-                                                'categories' => $categories]);
+        if ($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $editeurs = $this->_editeur->select();
+            $categories = $this->_categorie->select();
+            twig::render("livre/livre-create.php", [
+                'editeurs' => $editeurs,
+                'categories' => $categories
+            ]);
+        } else {
+            RequirePage::redirectPage("livre");
+        }
     }
     public function save() {
-        $data = $_POST;
-        $this->_livre->insert($data);
-
+        if ($_SESSION['lvlAccess'] >= 2) {
+            $data = $_POST;
+            $this->_livre->insert($data);
+            SystemJournal::createNote("Création de Livre: \"".$data['Titre']."\"  par administrateur");
+        }
         RequirePage::redirectPage("livre");
     }
     /**
      * Modifier la donnée du livre
      */
     public function modifier($id){
-        if(!isset($id)) {
+        if ($_SESSION['lvlAccess'] >= Crud::$ModeratorLVL) {
+            if (!isset($id)) {
+                RequirePage::redirectPage("livre");
+            }
+
+            $livre = $this->_livre->selectId($id);
+            $editeurs = $this->_editeur->select();
+            $categories = $this->_categorie->select();
+            twig::render("livre/livre-modifier.php", ['livre' => $livre,
+                'editeurs' => $editeurs,
+                'categories' => $categories
+            ]);
+        } else {
             RequirePage::redirectPage("livre");
         }
-
-        $livre = $this->_livre->selectId($id);
-        $editeurs = $this->_editeur->select();
-        $categories = $this->_categorie->select();
-        twig::render("livre/livre-modifier.php", ['livre' => $livre,
-                                                    'editeurs' => $editeurs,
-                                                    'categories' => $categories]);
     }
-
     public function update() {
-        $data = $_POST;
-        $this->_livre->update($data);
-
+        if ($_SESSION['lvlAccess'] >= Crud::$ModeratorLVL) {
+            $data = $_POST;
+            print_r($data);
+            $this->_livre->update($data);
+            SystemJournal::createNote("Modification de Livre: \"".$data['Titre']."\" [ID:".$data['id']."] par administrateur");
+        }
         RequirePage::redirectPage("livre");
     }
 
@@ -66,8 +81,11 @@ class ControllerLivre{
      * Supprimer la donnée de livre
      */
     function delete($id) {
-        $this->_livre->delete($id);
-
+        if ($_SESSION['lvlAccess'] >= Crud::$AdminLVL) {
+            $livre = $this->_livre->selectId($id);
+            $this->_livre->delete($id);
+            SystemJournal::createNote("Suppression de livre \"".$livre['Titre']."\" [ID:".$id."] par administrateur");
+        }
         RequirePage::redirectPage("livre");
     }
 }

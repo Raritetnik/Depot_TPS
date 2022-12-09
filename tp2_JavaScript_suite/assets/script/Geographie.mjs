@@ -1,6 +1,5 @@
 export default class Geographie {
 
-
     static getPays(params){
         var headers = new Headers();
         headers.append(`X-CSCAPI-KEY`, "RW9yWWZRSG5OWUh3YXBmbFNZQmJ3WHRPYlB0d0FoakFaMWlpTnpKOA==");

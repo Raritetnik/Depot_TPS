@@ -1,3 +1,4 @@
+{{ include('main-menu.php', {title: 'Commande', pageHeader: 'Commande modification'})}}
 <main>
     <form action="../update" method="POST" class="form-box">
         <label for="">Prix:
