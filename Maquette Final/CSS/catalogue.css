@@ -1,0 +1,135 @@
+@import url("global.css");
+@import url("composants/menu-principale.css");
+@import url("composants/pied-de-page.css");
+
+
+.catalogue {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    margin: 15px;
+}
+
+
+/**
+ La barre de filtres
+*/
+
+.filtres {
+    min-width: 35vmin;
+    margin-right: 15px;
+    background-color: rgba(255,255,255,0.5);
+}
+
+.filtres>* {
+    min-height: 100px;
+    max-lines: 5;
+}
+
+.filtres p {
+    margin: 10px 15px;
+}
+.filtres [type='checkbox'] {
+    margin-right: 10px;
+    transform: scale(1.4);
+}
+
+.filtres h3 {
+    background-color: var(--color__dark-vin);
+    text-align: center;
+    padding: 15px;
+    font-size: 4vmin;
+    font-family: var(--titre__font-family);
+}
+
+.filtres .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2vmin;
+    font-size: 25px;
+}
+
+.filtres .content input{
+    width: 10vmin;
+    margin: 0 2vmin;
+    font-size: 5vmin;
+}
+
+.filtres .content i {
+    font-size: 25px;
+}
+
+.filtres .content-recherche {
+    justify-content: center;
+    padding: 2vmin;
+    align-items: center;
+}
+
+#recherche {
+    max-width: 30vmin;
+    font-size: 25px;
+}
+
+
+/**
+Catalogue des cartes dans la grille
+*/
+
+.grille {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 15px;
+
+    align-content: start;
+}
+
+@media screen and (max-width: 900px) {
+    .grille {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .grille {
+        grid-template-columns: repeat(1,1fr);
+    }
+}
+
+.grille > .carte {
+    position: relative;
+    max-width: 300px;
+    max-height: 200px;
+    aspect-ratio: 3 / 2;
+    color: black;
+    border: 1px solid var(--color__vin);
+}
+
+.carte img {
+    width: 100%;
+    height: 100px;
+    padding-bottom: 0px;
+    object-position: 0 0;
+    object-fit: cover;
+}
+
+.carte header {
+    display: inline-block;
+    width: calc(100%-30px);
+    background-color: var(--color__white-ligth);
+    padding: 15px;
+}
+
+.carte header > div {
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.carte header button {
+    padding: 0 15px;
+    border: 1px solid var(--color__dark-vin);
+}
+
+.title {
+    font-family: var(--titre__font-family);
+}
