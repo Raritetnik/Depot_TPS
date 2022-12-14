@@ -5,9 +5,11 @@
 
 .catalogue {
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: 1fr 6fr;
     margin: 15px;
 }
+
+
 
 
 /**
@@ -15,13 +17,36 @@
 */
 
 .filtres {
-    min-width: 35vmin;
+    min-width: 200px;
     margin-right: 15px;
     background-color: rgba(255,255,255,0.5);
 }
 
+.btn-filtres {
+    position: absolute;
+    display: none;
+    left: 10px;
+    padding: 20px;
+    z-index: 2;
+    border-radius: 50%;
+    border: 2px solid var(--color__dark-vin);
+}
+@media screen and (max-width: 700px) {
+    .filtres {
+        position: absolute;
+        left: 0;
+        z-index: 5;
+        transform: translateX(-100%);
+    }
+    .catalogue,
+    .btn-filtres {
+        display: block;
+    }
+
+}
+
 .filtres>* {
-    min-height: 100px;
+    min-height: 80px;
     max-lines: 5;
 }
 
@@ -37,7 +62,7 @@
     background-color: var(--color__dark-vin);
     text-align: center;
     padding: 15px;
-    font-size: 4vmin;
+    font-size: 3vmin;
     font-family: var(--titre__font-family);
 }
 
@@ -50,23 +75,32 @@
 }
 
 .filtres .content input{
-    width: 10vmin;
-    margin: 0 2vmin;
-    font-size: 5vmin;
+    width:50%;
+    font-size: 18px;
 }
 
 .filtres .content i {
+    padding: 2px;
     font-size: 25px;
 }
 
 .filtres .content-recherche {
+    position: relative;
     justify-content: center;
     padding: 2vmin;
     align-items: center;
 }
+.filtres .content-recherche i {
+    position: absolute;
+    right: 2vmin;
+    padding: 4px 8px;
+    font-size: 25px;
+    top: 2vmin;
+    background-color: rgba(0, 0, 0, 0.9);
+}
 
 #recherche {
-    max-width: 30vmin;
+    width: 100%;
     font-size: 25px;
 }
 
@@ -77,31 +111,28 @@ Catalogue des cartes dans la grille
 
 .grille {
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
     gap: 15px;
 
     align-content: start;
 }
 
-@media screen and (max-width: 900px) {
-    .grille {
-        grid-template-columns: repeat(2,1fr);
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .grille {
-        grid-template-columns: repeat(1,1fr);
-    }
-}
-
 .grille > .carte {
     position: relative;
-    max-width: 300px;
     max-height: 200px;
     aspect-ratio: 3 / 2;
     color: black;
     border: 1px solid var(--color__vin);
+}
+
+@media screen and (max-width: 700px) {
+    .grille {
+        align-items: center;
+    }
+
+    .grille > .carte {
+        justify-self: center;
+    }
 }
 
 .carte img {
