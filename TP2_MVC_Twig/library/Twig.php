@@ -15,7 +15,6 @@ class Twig{
             $guest = true;
         }
         $twig->addGlobal('guest', $guest);
-
         echo $twig->render($template, $data);
     }
 }
