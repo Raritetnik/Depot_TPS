@@ -42,7 +42,7 @@ body {
 .btn-standart {
     margin-top: 15px;
     display: inline-block;
-    padding: 2vmin 5vmin;
+    padding: 10px 15px;
     text-decoration: none;
     background-color: var(--color__vin);
     color: white;

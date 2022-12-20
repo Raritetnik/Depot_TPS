@@ -230,7 +230,6 @@ export default class Application{
 
             data.commentaire = formulaitre.querySelector('[name="Commentaire"]').value;
 
-            console.log(data.pays);
             Commentaires.ajouterCommentaire(data);
             this.#routeur.naviguer('/detail?id='+route.parametre['id'], true);
         });
