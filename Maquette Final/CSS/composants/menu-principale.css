@@ -7,10 +7,34 @@
     min-height: 60px;
 }
 
+.menu-principale i {
+    display: none;
+    font-size: 5vmin;
+    padding-right: 15px;
+}
+
 @media screen and (max-width: 900px) {
     .menu-principale,
     .menu-principale nav {
 
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .menu-principale nav {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        z-index: 10;
+        background-color: var(--color__dark-vin);
+
+        top: 0;
+        right: 0;
+        transform: translateX(100%);
+    }
+
+    .menu-principale i {
+        display: block;
     }
 }
 

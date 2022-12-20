@@ -14,7 +14,7 @@
 
 
     color: black;
-    background-image: url("../Assets/banner/many_stamps.jpg");
+    background-image: url("../Assets/banner/many_stamps_1.webp");
     background-size: cover;
 }
 
@@ -104,6 +104,25 @@
 [name='categories'] option {
     color: black;
 }
+@media screen and (max-width: 900px) {
+    .recherche {
+        display: flex;
+        flex-direction: column;
+    }
+
+    [name='recherche'] {
+        padding-left: none;
+    }
+
+    .recherche>:not(:last-child) {
+        border-right: none;
+        border-bottom: 2px solid white;
+    }
+
+    .recherche>div {
+        align-items: center;
+    }
+}
 
 /**
 
@@ -172,6 +191,18 @@
     transform: scale(1.1);
     border: #D9D9D9 solid 2px;
 }
+@media screen and (max-width: 900px) {
+    .carroussel {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .carroussel .carte {
+        aspect-ratio: 2 / 2;
+    }
+
+}
 
 /**
 
@@ -193,9 +224,21 @@
     padding-bottom: 10px;
 }
 
+@media screen and (max-width: 900px) {
+    .biographie  {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .biographie img {
+        margin: 0 auto;
+    }
+}
+
 /**
  Catégories populaires
 */
+
 .actualités {
     display: grid;
     grid-template-areas:
@@ -274,6 +317,18 @@
 
 .actualités .description>* {
     padding-bottom: 10px;
+}
+
+@media screen and (max-width: 900px) {
+    .actualités {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .affiche-principale {
+        max-width: none;
+    }
 }
 
 /**
