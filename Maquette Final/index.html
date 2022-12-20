@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Page accueil de Lord Stampee.">
+    <link rel="preload" href="/Assets/banner/many_stamps_1.webp" as="image">
     <link rel="stylesheet" href="CSS/accueil.css">
-    <script src="https://kit.fontawesome.com/62104b1a3a.js" crossorigin="anonymous"></script>
     <title>Page Affichage</title>
 </head>
 <body>
     <header class="menu-principale">
        <div class="menu-logo">
-            <img src="Assets/stamps.png" class='logo' alt="">
+            <img src="Assets/stamps.webp" height='50' width="50" class='logo' alt="">
        </div>
        <i class="fa-solid fa-bars"></i>
         <nav>
@@ -25,7 +26,7 @@
         <header>
             <div class="titre">
                 <h1>Bienvenu sur les enchères de <br>Lord Stampee</h1>
-                <h3>Voir nos offres exceptionnels</h3>
+                <h2>Voir nos offres exceptionnels</h2>
                 <small>Participer à une enchère est plus simple que vous le croyez</small>
                 <a href="catalogue.html" class="btn-standart">Catalogue</a>
             </div>
@@ -33,18 +34,18 @@
         <section class="recherche">
             <div>
                 <h2>À la recherche de quelque chose en particulier?</h2>
-                <div class="barre-recherche">
-                    <span>
-                        <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
-                        <input type="text" name="recherche">
-                    </span>
+                <form class="barre-recherche" action="#">
+                    <label>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" name="recherche" id="recherche" placeholder="Saisir le texte...">
+                    </label>
                     <select name="categories">
                         <option>Catégories</option>
                         <option>Timbres</option>
                         <option>Nouvelles</option>
                         <option>Évenements</option>
                     </select>
-                </div>
+                </form>
             </div>
             <div class="action-rapide">
                 <h2>Nouveau utilisateur?</h2>
@@ -59,7 +60,7 @@
             <h2>Les offres populaires</h2>
             <div class="carroussel">
                 <div class="carte">
-                    <img src="Assets/banner/Stamp_US_1957_4c_flag.webp" alt="">
+                    <img src="Assets/banner/Stamp_US_1957_4c_flag.webp" alt="" width="300" height="400">
                     <div class="description">
                         <h3>U.S drapeau Etat-Unis, 4$ #63122 bleu rouge</h3>
                         <div>
@@ -73,7 +74,7 @@
                     </div>
                 </div>
                 <div class="carte">
-                    <img src="Assets/banner/download (1).webp" alt="">
+                    <img src="Assets/banner/download.webp" alt="" width="300" height="400">
                     <div class="description">
                         <h3>Saint Louis deux ours, 20C #423112 rouge vin</h3>
                         <div>
@@ -87,7 +88,7 @@
                     </div>
                 </div>
                 <div class="carte">
-                    <img src="Assets/banner/ezgif.com-gif-maker.webp" alt="">
+                    <img src="Assets/banner/ezgif.com-gif-maker.webp" alt="" width="300" height="400">
                     <div class="description">
                         <h3>Postal & Inland Revenue 1875, 1Penny #331412 vin foncé</h3>
                         <div>
@@ -101,7 +102,7 @@
                     </div>
                 </div>
                 <div class="carte">
-                    <img src="Assets/banner/180px-Stamp_Gibraltar_1889_10c.webp" alt="">
+                    <img src="Assets/banner/180px-Stamp_Gibraltar_1889_10c.webp" alt="" width="300" height="400">
                     <div class="description">
                         <h3>Gibraltar 1889, 10C #423112 rouge vin</h3>
                         <div>
@@ -115,7 +116,7 @@
                     </div>
                 </div>
                 <div class="carte">
-                    <img src="Assets/banner/car.webp" alt="">
+                    <img src="Assets/banner/car.webp" alt="" width="300" height="400">
                     <div class="description">
                         <h3>URSS Vieille voiture 1925, 5RUB #14552 bleu</h3>
                         <div>
@@ -135,7 +136,7 @@
             <div class="actualités">
                 <div class="affiche-principale">
                     <div class="image-article">
-                        <img src="Assets/londres_830.webp" alt="">
+                        <img src="Assets/londres_830.webp" width="400" height="250" alt="">
                         <div>
                             <i class="fa-solid fa-user-tie"></i>
                             <small><i>Par Lord Stampee</i></small>
@@ -150,7 +151,7 @@
                 </div>
                 <div class="affiche top">
                     <div class="image-article">
-                        <img src="Assets/world-of-stamps2.webp" alt="">
+                        <img src="Assets/world-of-stamps2.webp" width="250" height="150" alt="">
                         <div>
                             <i class="fa-solid fa-user-tie"></i>
                             <small><i>Par William H. Gross</i></small>
@@ -164,7 +165,7 @@
                 </div>
                 <div class="affiche bot">
                     <div class="image-article">
-                        <img src="Assets/3-dsc-2712.webp" alt="">
+                        <img src="Assets/3-dsc-2712.webp" width="250" height="150" alt="">
                         <div>
                             <i class="fa-solid fa-user-tie"></i>
                             <small><i>Par Lord Stampee</i></small>
@@ -180,9 +181,9 @@
             </div>
         </section>
         <section class="biographie">
-            <img src="Assets/Lord-M-A-Stampee.png" alt="">
+            <img src="Assets/Lord-M-A-Stampee.webp" width="400" height="400" alt="">
             <div class="text-bloc">
-                <h3>Lord Reginald Stampee</h3>
+                <h1>Lord Reginald Stampee</h1>
                 <p><i>Philatéliste</i></p>
                 <p>Lord Reginald Stampee III né le 6 août 1950 à Londres est un des plus célèbres philatélistes anglais.</p>
 
@@ -215,7 +216,7 @@
     </main>
     <footer class="pied-de-page">
         <section class="info">
-            <img src="Assets/stamps.png" class='logo' alt="">
+            <img src="Assets/stamps.webp" width="150" height="150" class='logo' alt="">
             <p>1888, Windsor St.Londres, Royaume-Unis EC2R EA4</p>
             <p>Tel : 514 555 2332</p>
             <p>Email : lordstampee@stamp.uk</p>
@@ -224,22 +225,22 @@
             <nav>
                 <div>
                     <h3>Actualités</h3>
-                    <a href="">Timbres</a>
-                    <a href="">Enchères</a>
-                    <a href="">Vie de Lord</a>
-                    <a href="">Vie de Lord</a>
+                    <a href="#">Timbres</a>
+                    <a href="#">Enchères</a>
+                    <a href="#">Vie de Lord</a>
+                    <a href="#">Vie de Lord</a>
                 </div>
                 <div>
                     <h3>Aide</h3>
-                    <a href="">Modifier mon profil</a>
-                    <a href="">Placer une offre</a>
-                    <a href="">Termes et conditions</a>
-                    <a href="">Contacter WebMester</a>
+                    <a href="#">Modifier mon profil</a>
+                    <a href="#">Placer une offre</a>
+                    <a href="#">Termes et conditions</a>
+                    <a href="#">Contacter WebMester</a>
                 </div>
                 <div>
                     <h3>À propos</h3>
-                    <a href="">Vie de Lord Stampee</a>
-                    <a href="">Gestion des enchères</a>
+                    <a href="#">Vie de Lord Stampee</a>
+                    <a href="#">Gestion des enchères</a>
                 </div>
             </nav>
             <div>
@@ -253,5 +254,6 @@
             </div>
         </section>
     </footer>
+    <script src="https://kit.fontawesome.com/62104b1a3a.js" crossorigin="anonymous" async></script>
 </body>
 </html>

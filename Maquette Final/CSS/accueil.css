@@ -11,6 +11,7 @@
     min-height: 70vmin;
     display: flex;
     align-items: center;
+    position: relative;
 
 
     color: black;
@@ -21,7 +22,7 @@
 .contenu-principale header::before {
     content: "";
     position: absolute;
-    min-height: inherit;
+    min-height: 100%;
     min-width: 70%;
     background-image: linear-gradient(to right, black, transparent);
 }
@@ -74,23 +75,37 @@
     padding-left: 0;
 }
 .barre-recherche {
-    position: relative;
     display: flex;
     align-items: center;
 }
 
-.barre-recherche a{
+.barre-recherche button{
     position: absolute;
     left: 1vmin;
     top: 0.5vmin;
     color: black;
     font-size: 4.5vmin;
 }
+
+.barre-recherche label{
+    position: relative;
+    margin-right: 20px;
+}
+
+.barre-recherche i {
+    background-color: transparent;
+    position: absolute;
+    display: inline-block;
+    color: black;
+    right: 0;
+    top: 0;
+    font-size: 4.5vmin;
+    padding: 0.6vmin;
+}
+
 [name='recherche'] {
     min-width: 60vmin;
     font-size: 4.5vmin;
-    padding-left: 6vmin;
-    margin-right: 20px;
 }
 [name='categories'] {
     background-color: transparent;
@@ -193,13 +208,13 @@
 }
 @media screen and (max-width: 900px) {
     .carroussel {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
         gap: 15px;
     }
 
     .carroussel .carte {
-        aspect-ratio: 2 / 2;
+        aspect-ratio: 2 / 3;
     }
 
 }
@@ -218,6 +233,8 @@
 
 .biographie img {
     max-width: 60vmin;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
 }
 
 .biographie p  {
@@ -272,6 +289,7 @@
 }
 .actualités img {
     max-width: 30vmin;
+    object-fit: cover;
 }
 .actualités .affiche {
     display: flex;
@@ -282,6 +300,7 @@
 .affiche .image-article {
     text-align: center;
     flex: 1 2;
+    object-fit: cover;
 }
 
 .affiche-principale {
@@ -374,4 +393,14 @@ section.abandonner {
 .abandonner>div:last-child {
     padding-top: 10px;
     padding-left: 10px;
+}
+
+@media screen and (max-width: 900px) {
+    section.abandonner {
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        gap: 15px;
+        padding-bottom: 15px;
+    }
 }

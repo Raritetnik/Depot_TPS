@@ -46,7 +46,7 @@
 
 .pied-de-page .logo {
     margin: 15px 10vmin;
-    max-width: 15vmin;
+    aspect-ratio: 1 / 1;
     justify-content: center;
 }
 
@@ -74,4 +74,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+@media screen and (max-width: 900px) {
+    .pied-de-page {
+        display: flex;
+        flex-direction: column;
+    }
 }
