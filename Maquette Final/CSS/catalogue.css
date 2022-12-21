@@ -99,7 +99,8 @@
 }
 
 .filtres .content input{
-    width:50%;
+    width:100%;
+    padding: 5px;
     font-size: 18px;
 }
 
